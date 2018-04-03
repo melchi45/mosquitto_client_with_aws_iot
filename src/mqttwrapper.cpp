@@ -1,9 +1,13 @@
 #include <stdio.h>     /* for printf */
 #include <stdlib.h>    /* for exit */
+#if ( !defined(_MSC_VER) && (!(defined(_WIN32) || !defined(_WIN64))))
 #include <getopt.h>    /* for getopt */
+#include <unistd.h>    /* for sleep */
+#else
+#include "getopt.h"    /* for getopt */
+#endif
 #include <cstring>     /* for strncpy, strlen */
 #include <signal.h>    /* for signal */
-#include <unistd.h>    /* for sleep */
 #include "mqttwrapper.h"
 
 using namespace std;
@@ -11,11 +15,11 @@ using namespace std;
 static int run = 1;
 
 // Server connection parameters
-#define MQTT_HOSTNAME "test.mosquitto.org"
-#define MQTT_PORT 1883
-#define MQTT_USERNAME "admin"
-#define MQTT_PASSWORD "admin"
-#define MQTT_TOPIC "test"
+#define MQTT_HOSTNAME "test.mosquitto.org"	/* mqtt server url for test */
+#define MQTT_PORT 1883						/* mqtt server port */
+#define MQTT_USERNAME "admin"				/* mqtt username */
+#define MQTT_PASSWORD "admin"				/* mqtt password */
+#define MQTT_TOPIC "test"					/* mqtt topic */
 
 void handle_signal(int s)
 {
@@ -167,16 +171,18 @@ void MQTTWrapper::on_message(const struct mosquitto_message *message)
 	std::cout << "qos: " << message->qos << std::endl;
 	std::cout << "payload length: " << message->payloadlen << std::endl;
 	std::cout << "payload: " << message->payload << std::endl;
-	std::cout << "message: " << str << std::endl;
+	std::cout << "message: " << str.c_str() << std::endl;
 	std::cout << "retain: " << message->retain << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
 	int opt, rc = 0;
+	/* you have to modify iot url and port number from aws iot console for your aws iot */
 	const char* target_host = "a31dsdqskm4t0i.iot.us-east-1.amazonaws.com";
 	int target_port = 8883;
 	
+	/* you have to modify certifiacate path for your aws iot */
 	std::string capath("/home/ubuntu/Dev/wr4.0/cert");
 	std::string cafile("/home/ubuntu/Dev/wr4.0/cert/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.pem");
 	std::string cert("/home/ubuntu/Dev/wr4.0/cert/certificate.pem.crt");
@@ -209,7 +215,10 @@ int main(int argc, char *argv[])
 	}
 	
 	MQTTWrapper * mqttHdl;
-	//mqttHdl = new MQTTWrapper("connection-test", target_host, target_port);
+	/* if you want to use test mqtt server 
+	 * mqttHdl = new MQTTWrapper("connection-test", target_host, target_port); 
+	 */
+	/* if you want to use aws iot server */
 	mqttHdl = new MQTTWrapper("connection-test", target_host, target_port, capath.c_str(), cafile.c_str(), cert.c_str(), key.c_str());
 	//mqttHdl = new MQTTWrapper("subscribe-qos0-test");
 	//mqttHdl->connect(target_host, target_port, 60);
