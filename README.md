@@ -64,9 +64,11 @@ If you are ready for remote environment, open it for visual studio solution file
 ## Source Code
 First, Mosquitto test server
 If you want to test this application with test.mosquitto.org, you should open this line on this source code.
-	/* if you want to use test mqtt server 
-	 * mqttHdl = new MQTTWrapper("connection-test", target_host, target_port); 
-	 */
+```
+/* if you want to use test mqtt server 
+ * mqttHdl = new MQTTWrapper("connection-test", target_host, target_port); 
+ */
+``` 
 you can test it with mosquitto test server.
 
 Second, AWS IoT service platform
@@ -74,10 +76,12 @@ If you want to test with AWS IoT platform, you have to create aws iot certificat
 and, you have to download crt and key files from AWS IoT console. otherwise, you can possible to generate certification file with openssl. [ref. 2](https://docs.aws.amazon.com/iot/latest/developerguide/device-certs-your-own.html)
 
 If you are complete certification download from AWS IoT, you can modify certification path from this line on this source code.
-	std::string capath("/home/ubuntu/Dev/wr4.0/cert");
-	std::string cafile("/home/ubuntu/Dev/wr4.0/cert/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.pem");
-	std::string cert("/home/ubuntu/Dev/wr4.0/cert/certificate.pem.crt");
-	std::string key("/home/ubuntu/Dev/wr4.0/cert/private.pem.key");
+```
+std::string capath("/home/ubuntu/Dev/wr4.0/cert");
+std::string cafile("/home/ubuntu/Dev/wr4.0/cert/VeriSign-Class 3-Public-Primary-Certification-Authority-G5.pem");
+std::string cert("/home/ubuntu/Dev/wr4.0/cert/certificate.pem.crt");
+std::string key("/home/ubuntu/Dev/wr4.0/cert/private.pem.key");
+```
 
 
 ## Finally!
